@@ -1,0 +1,20 @@
+---
+- name: Deploy Ceph
+  hosts: "{{ HOSTS }}"
+  become: true
+  tasks:
+    - name: Install Ceph repository
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - apt-transport-https
+        - ca-certificates
+        - curl
+        - software-properties-common
+        - ceph
+
+    - name: copy ceph.conf
+      copy:
+        dest: /etc/ceph/
+        src: conf/ceph.conf
